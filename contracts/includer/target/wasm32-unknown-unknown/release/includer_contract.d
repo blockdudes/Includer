@@ -1,0 +1,1 @@
+/Users/somyaranjankhatua/Steller\ Hackathon/Includer/contracts/includer/target/wasm32-unknown-unknown/release/includer_contract.wasm: /Users/somyaranjankhatua/Steller\ Hackathon/Includer/contracts/includer/src/lib.rs /Users/somyaranjankhatua/Steller\ Hackathon/Includer/contracts/includer/src/test.rs
