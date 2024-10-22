@@ -75,7 +75,12 @@ impl IncluderContract {
 
                 // this is working code it will uncomment after some time...
                 let token_client = token::Client::new(&env, &token_addr);
-                token_client.transfer(&user, &env.current_contract_address(), &amount);
+                token_client.transfer_from(
+                    &env.current_contract_address(),
+                    &user,
+                    &env.current_contract_address(),
+                    &amount,
+                );
 
                 let mut user_info = Self::get_user_balance(&env, user.clone());
 
@@ -153,7 +158,8 @@ impl IncluderContract {
                     return Err(Error::InsufficientBalance);
                 }
 
-                token_client.transfer(
+                token_client.transfer_from(
+                    &env.current_contract_address(),
                     &user,
                     &env.current_contract_address(),
                     &user_info.borrow_balance,
@@ -259,3 +265,40 @@ impl IncluderContract {
 }
 
 mod test;
+
+// stellar contract invoke \
+//  --id CC6RLZYEPYA77CG6VRO5T5WZE4XWXIDNAJQFLWGP443YTB53GUHDNIJS \
+//  --source-account SBOU7VP4MYLJSFFYRXV5Z2XAT62YQBUKQQA2ANBDP3P5FLBPQMRM6XJN \
+//  --rpc-url https://soroban-testnet.stellar.org:443 \
+//  --network-passphrase 'Test SDF Network ; September 2015' \
+//  -- initialize \
+//  --admin GCYLJJAPJMRUGM2L7SSRQ3MNFRGL3JO6WPCBU75SEXGSL6RAXBFN7SZI \
+//  --fungible CB4TXZYTMLZPK2UC323FU6XZ4DWL6RC4TKSCT5J7H4YDUJJL4MVPFPIN \
+//  --borrow_token CB4TXZYTMLZPK2UC323FU6XZ4DWL6RC4TKSCT5J7H4YDUJJL4MVPFPIN
+
+// stellar contract invoke \
+//  --id CB3RCXG2PNZYH3FGTSWDZFEQQLHUAW4YQFNFZN5A76BSQ5LJXTT2FF5J \
+//  --source-account SBOU7VP4MYLJSFFYRXV5Z2XAT62YQBUKQQA2ANBDP3P5FLBPQMRM6XJN \
+//  --rpc-url https://soroban-testnet.stellar.org:443 \
+//  --network-passphrase 'Test SDF Network ; September 2015' \
+//  -- initialize \
+//  --admin GCYLJJAPJMRUGM2L7SSRQ3MNFRGL3JO6WPCBU75SEXGSL6RAXBFN7SZI \
+//  --decimal 6 \
+//  --name 'usdc' \
+//  --symbol '"USDC"'
+
+// stellar contract invoke \
+//  --id CDFWSOUNZLSLLD2FZLSWDTM3ERTFIRETATXVC3PC4THLL3YKWMG2SW3S \
+//  --source-account SBOU7VP4MYLJSFFYRXV5Z2XAT62YQBUKQQA2ANBDP3P5FLBPQMRM6XJN \
+//  --rpc-url https://soroban-testnet.stellar.org:443 \
+//  --network-passphrase 'Test SDF Network ; September 2015' \
+//  -- approve \
+//  --from GCYLJJAPJMRUGM2L7SSRQ3MNFRGL3JO6WPCBU75SEXGSL6RAXBFN7SZI \
+//  --spender CB4N2FCUQEEYIG72P6CFVOH2BWY2BY5PO4RSO37ULXDE2LORQEN3U6HA \
+//  --amount 100 \
+//  --expiration_ledger 200 \
+
+// stellar contract deploy \
+//   --wasm target/wasm32-unknown-unknown/release/soroban_token_contract.wasm \
+//   --source alice \
+//   --network testnet
