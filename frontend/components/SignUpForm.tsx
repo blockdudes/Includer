@@ -27,11 +27,14 @@ const SignUpForm = () => {
     console.log(name);
 
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/registerUser`, {
-        name,
-        email: formData.email,
-        password: formData.password
-      })
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/registerUser`,
+        {
+          name,
+          email: formData.email,
+          password: formData.password,
+        }
+      );
     } catch (error) {
       console.log(error);
     }
@@ -41,21 +44,6 @@ const SignUpForm = () => {
     <div className="relative w-full max-w-lg bg-white/10 rounded-lg shadow-md">
       <div className="absolute bottom-0 -z-50 background-dots-fade h-40 w-full" />
       <div className="p-8">
-        <h4 className="text-center text-white text-base mb-4">Register with</h4>
-        <div className="flex items-center justify-center gap-4 mb-4">
-          <Button
-            size="md"
-            className="w-full flex items-center justify-center gap-2 bg-white/10"
-            onClick={async () => { }}
-            placeholder={undefined}
-            onPointerEnterCapture={undefined}
-            onPointerLeaveCapture={undefined}
-          >
-            <BsGoogle size={15} />
-            Sign up with Google
-          </Button>
-        </div>
-        <p className="text-center text-white mb-4">Or</p>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="w-full">
@@ -115,35 +103,6 @@ const SignUpForm = () => {
               </div>
             </div>
           </div>
-          {/* <div className="w-full">
-            <h3 className="text-white mb-1">Username</h3>
-            <div className="relative w-full">
-              <svg
-                className="absolute left-4 top-1/2 -translate-y-1/2"
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M3.43008 15.1987C3.93702 14.0043 5.12061 13.1667 6.49984 13.1667H11.4998C12.8791 13.1667 14.0627 14.0043 14.5696 15.1987M12.3332 6.91667C12.3332 8.75762 10.8408 10.25 8.99984 10.25C7.15889 10.25 5.6665 8.75762 5.6665 6.91667C5.6665 5.07572 7.15889 3.58334 8.99984 3.58334C10.8408 3.58334 12.3332 5.07572 12.3332 6.91667ZM17.3332 9.00001C17.3332 13.6024 13.6022 17.3333 8.99984 17.3333C4.39746 17.3333 0.666504 13.6024 0.666504 9.00001C0.666504 4.39763 4.39746 0.666672 8.99984 0.666672C13.6022 0.666672 17.3332 4.39763 17.3332 9.00001Z"
-                  stroke="white"
-                  strokeWidth="1.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <input
-                type="text"
-                placeholder="Username"
-                name="username"
-                onChange={handleChange}
-                className="w-full pl-12 px-2 py-2 rounded-md border-[0.1px] border-white/30 bg-white/10 text-sm placeholder:text-sm placeholder:text-gray-500 text-white"
-                required
-              />
-            </div>
-          </div> */}
           <div className="w-full">
             <h3 className="text-white mb-1">Email</h3>
             <div className="relative w-full">

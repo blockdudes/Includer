@@ -270,7 +270,7 @@ const TransactionHistoryTable = () => {
             labelProps={{ className: "hidden" }}
             menuProps={{
               className:
-                "bg-card-background-gradient text-white backdrop-blur-md p-2",
+                "bg-card-background-gradient space-y-1 text-white backdrop-blur-md p-2",
             }}
             containerProps={{
               className: "bg-card-background-gradient rounded-3xl",

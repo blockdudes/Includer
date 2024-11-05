@@ -1,11 +1,12 @@
 "use client";
-import { Button, Input } from "@material-tailwind/react";
+import { Button, Input, Option, Select } from "@material-tailwind/react";
 import React, { useState } from "react";
 import CustomDialog from "./CustomDialog";
 
 const SavingsActions = () => {
   const [isWithdrawDialogOpen, setIsWithdrawDialogOpen] = useState(false);
   const [isTransferDialogOpen, setIsTransferDialogOpen] = useState(false);
+  const [savingsType, setSavingsType] = useState("savings");
   const [withdrawAmount, setWithdrawAmount] = useState(0);
   const [transferAmount, setTransferAmount] = useState(0);
 
@@ -29,9 +30,35 @@ const SavingsActions = () => {
           body={
             <div className="flex flex-col gap-2">
               <span className="text-sm">
-                Withdraw funds from your savings account. Enter the amount to
+                Withdraw funds from your savings or super savings account.
+                Select the type of savings account and enter the amount to
                 withdraw.
               </span>
+              <div>
+                <label>Savings Type</label>
+                <Select
+                  className="w-full p-2 border-[1px] !border-green-500 !shadow-card-shadow placeholder:opacity-100 placeholder:text-white/80 text-white stroke-white"
+                  labelProps={{
+                    className: "hidden",
+                  }}
+                  menuProps={{
+                    className:
+                      "bg-card-background-gradient backdrop-blur-lg font-medium text-white accent-white space-y-1",
+                  }}
+                  value={savingsType}
+                  onChange={(value) => {
+                    if (value) {
+                      setSavingsType(value);
+                    }
+                  }}
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                >
+                  <Option value="savings">Savings</Option>
+                  <Option value="superSavings">Super Savings</Option>
+                </Select>
+              </div>
               <div>
                 <p>Amount</p>
                 <Input

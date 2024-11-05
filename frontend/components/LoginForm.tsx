@@ -23,10 +23,13 @@ const SignInForm = () => {
     console.log(formData);
 
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/loginUser`, {
-        email: formData.email,
-        password: formData.password
-      })
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/loginUser`,
+        {
+          email: formData.email,
+          password: formData.password,
+        }
+      );
     } catch (error) {
       console.log(error);
     }
@@ -36,23 +39,8 @@ const SignInForm = () => {
     <div className="relative w-full max-w-lg bg-white/10 rounded-lg shadow-md">
       <div className="absolute bottom-0 -z-50 background-dots-fade h-40 w-full" />
       <div className="p-8">
-        <div className="flex items-center justify-center gap-4 mb-4">
-          <Button
-            size="md"
-            className="w-full flex items-center justify-center gap-2 bg-white/10"
-            onClick={async () => { }}
-            placeholder={undefined}
-            onPointerEnterCapture={undefined}
-            onPointerLeaveCapture={undefined}
-          >
-            <BsGoogle size={15} />
-            Sign in with Google
-          </Button>
-        </div>
-        <p className="text-center text-white mb-4">Or</p>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="w-full">
-            {/* <h3 className="text-white mb-1">Username or Email</h3> */}
             <h3 className="text-white mb-1">Email</h3>
             <div className="relative w-full">
               <svg
@@ -72,9 +60,7 @@ const SignInForm = () => {
                 />
               </svg>
               <input
-                // placeholder="Username or Email"
                 placeholder="Email"
-                // name="emailOrUsername"
                 name="email"
                 onChange={handleChange}
                 className="w-full pl-12 px-2 py-2 rounded-md border-[0.1px] border-white/30 bg-white/10 text-sm placeholder:text-sm placeholder:text-gray-500 text-white"
@@ -110,13 +96,13 @@ const SignInForm = () => {
                 required
               />
             </div>
-            <Link
-              href="/forgot-password"
-              className="text-primary text-xs mt-1 block text-right"
-            >
-              Forgot Password?
-            </Link>
           </div>
+          <p className="text-gray-400 text-sm">
+            By signing in, you are confirming your acceptance of{" "}
+            <span className="text-primary">Terms of Service</span> and
+            acknowledging that you have read and understood{" "}
+            <span className="text-primary">Privacy Policy</span>.
+          </p>
           <Button
             type="submit"
             color="yellow"

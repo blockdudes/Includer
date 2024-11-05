@@ -7,7 +7,7 @@ const LoanActions = () => {
   const [isGetLoanDialogOpen, setIsGetLoanDialogOpen] = useState(false);
   const [isRepayLoanDialogOpen, setIsRepayLoanDialogOpen] = useState(false);
   const [loanAmount, setLoanAmount] = useState(0);
-  const [duration, setDuration] = useState("3");
+  const [duration, setDuration] = useState("1");
 
   return (
     <div className="grid grid-cols-2 gap-4">
@@ -63,7 +63,7 @@ const LoanActions = () => {
                   }}
                   menuProps={{
                     className:
-                      "bg-card-background-gradient backdrop-blur-lg font-medium text-white accent-white",
+                      "bg-card-background-gradient space-y-1 backdrop-blur-lg font-medium text-white accent-white",
                   }}
                   value={duration}
                   onChange={(value) => {
@@ -75,6 +75,7 @@ const LoanActions = () => {
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
                 >
+                  <Option value="1">1 month</Option>
                   <Option value="3">3 months</Option>
                   <Option value="6">6 months</Option>
                   <Option value="12">12 months</Option>

@@ -11,7 +11,7 @@ const SuperSavingsInvestment = () => {
       <h2 className="text-2xl font-bold mb-4">Invest in Super Savings</h2>
       <form className="flex flex-col gap-4">
         <div>
-          <label className="text-lg text-white">Amount to Lock</label>
+          <label className="text-lg text-white">Amount</label>
           <Input
             type="number"
             size="md"
@@ -34,34 +34,8 @@ const SuperSavingsInvestment = () => {
           />
         </div>
         <div>
-          <label className="text-lg text-white">Time Frame</label>
-          <Select
-            className="w-full p-2 border-[1px] !border-green-500 !shadow-card-shadow placeholder:opacity-100 placeholder:text-white/80 text-white stroke-white"
-            labelProps={{
-              className: "hidden",
-            }}
-            menuProps={{
-              className:
-                "bg-card-background-gradient backdrop-blur-lg font-medium text-white accent-white",
-            }}
-            value={timeFrame}
-            onChange={(value) => {
-              if (value) {
-                setTimeFrame(value);
-              }
-            }}
-            placeholder={undefined}
-            onPointerEnterCapture={undefined}
-            onPointerLeaveCapture={undefined}
-          >
-            <Option value="3">3 months</Option>
-            <Option value="6">6 months</Option>
-            <Option value="12">1 year</Option>
-          </Select>
-        </div>
-        <div>
           <label className="text-lg text-white">Estimated Interest Rate</label>
-          <p className="text-lg font-semibold text-white">2.5%</p>
+          <p className="text-lg font-semibold text-white">5%</p>
         </div>
         <Button
           size="lg"
@@ -73,10 +47,6 @@ const SuperSavingsInvestment = () => {
         >
           Lock Funds
         </Button>
-        <p className="text-sm text-white/80 mt-2">
-          Note: Early withdrawal may incur penalties. Interest rates are subject
-          to change.
-        </p>
       </form>
     </div>
   );
