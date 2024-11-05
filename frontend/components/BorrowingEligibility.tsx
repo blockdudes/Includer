@@ -5,12 +5,12 @@ const BorrowingEligibility = () => {
     <div className="bg-card-background-gradient shadow-card-shadow p-4 rounded-lg">
       <h2 className="text-2xl font-bold mb-4">Borrowing Eligibility</h2>
       <div className="grid grid-cols-2 gap-6">
-        <div className="bg-card-background-gradient shadow p-4 rounded-lg flex flex-col">
+        <div className="bg-card-background-gradient shadow-card-shadow p-4 rounded-lg flex flex-col">
           <h3 className="font-semibold mb-2">Maximum Borrowable Amount</h3>
           <p className="text-3xl font-bold">$0.00</p>
           <p className="text-sm text-white/90">(80% of locked Super Savings)</p>
         </div>
-        <div className="bg-card-background-gradient shadow p-4 rounded-lg flex flex-col">
+        <div className="bg-card-background-gradient shadow-card-shadow p-4 rounded-lg flex flex-col">
           <h3 className="font-semibold mb-2">Interest Rates</h3>
           <ul className="space-y-1 text-sm">
             <li>0-40% borrowed: 2% interest rate</li>
@@ -19,7 +19,7 @@ const BorrowingEligibility = () => {
           </ul>
         </div>
       </div>
-      <div className="mt-4 p-4 bg-card-background-gradient shadow rounded-lg">
+      <div className="mt-4 p-4 bg-card-background-gradient shadow-card-shadow rounded-lg">
         <h3 className="font-semibold mb-2">Loan Terms</h3>
         <p className="text-sm text-white/90">
           All loans must be repaid by the specified due date. Repayment can be

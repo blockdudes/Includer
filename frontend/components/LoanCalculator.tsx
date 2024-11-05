@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 const LoanCalculator = () => {
   const [loanAmount, setLoanAmount] = useState(0);
-  const [duration, setDuration] = useState("3");
+  const [duration, setDuration] = useState("1");
 
   return (
     <div className="bg-card-background-gradient shadow-card-shadow p-4 rounded-lg">
@@ -16,7 +16,7 @@ const LoanCalculator = () => {
             type="number"
             size="md"
             className={
-              "border !border-white placeholder:opacity-100 placeholder:text-white/80 text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              "!border-green-500 !border-[1px] !shadow-card-shadow placeholder:opacity-100 placeholder:text-white/80 text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             }
             labelProps={{
               className: "hidden",
@@ -36,13 +36,13 @@ const LoanCalculator = () => {
         <div>
           <label>Duration</label>
           <Select
-            className="w-full p-2 border !border-white placeholder:opacity-100 placeholder:text-white/80 text-white stroke-white"
+            className="w-full p-2 border-[1px] !border-green-500 !shadow-card-shadow placeholder:opacity-100 placeholder:text-white/80 text-white stroke-white"
             labelProps={{
               className: "hidden",
             }}
             menuProps={{
               className:
-                "bg-card-background-gradient backdrop-blur-lg font-medium text-white accent-white",
+                "bg-card-background-gradient space-y-1 backdrop-blur-lg font-medium text-white accent-white",
             }}
             value={duration}
             onChange={(value) => {
@@ -54,6 +54,7 @@ const LoanCalculator = () => {
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
           >
+            <Option value="1">1 month</Option>
             <Option value="3">3 months</Option>
             <Option value="6">6 months</Option>
             <Option value="12">12 months</Option>

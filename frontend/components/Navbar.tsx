@@ -50,7 +50,7 @@ const Navbar = () => {
             href={link.path}
             className={`flex items-center gap-2 text-base font-semibold ${
               pathname === link.path
-                ? "bg-card-background-gradient shadow-card-shadow"
+                ? "bg-card-background-gradient shadow-card-shadow border-[1px] !border-green-500"
                 : ""
             } py-3 px-10 rounded-full`}
           >

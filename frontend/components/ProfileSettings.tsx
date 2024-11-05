@@ -84,7 +84,7 @@ const ProfileSettings = () => {
           onChange={(e) => setFirstName(e.target.value)}
           size="md"
           readOnly={!isEditMode}
-          className={`border !border-white placeholder:opacity-100 placeholder:text-white/80 text-white ${
+          className={`border-[1px] !border-green-500 !shadow-card-shadow placeholder:opacity-100 placeholder:text-white/80 text-white ${
             isEditMode ? "" : "bg-transparent cursor-default"
           }`}
           labelProps={{
@@ -103,7 +103,7 @@ const ProfileSettings = () => {
           onChange={(e) => setLastName(e.target.value)}
           size="md"
           readOnly={!isEditMode}
-          className={`border !border-white placeholder:opacity-100 placeholder:text-white/80 text-white ${
+          className={`border-[1px] !border-green-500 !shadow-card-shadow placeholder:opacity-100 placeholder:text-white/80 text-white ${
             isEditMode ? "" : "bg-transparent cursor-default"
           }`}
           labelProps={{
@@ -122,7 +122,7 @@ const ProfileSettings = () => {
           onChange={(e) => setUsername(e.target.value)}
           size="md"
           readOnly={!isEditMode}
-          className={`border !border-white placeholder:opacity-100 placeholder:text-white/80 text-white ${
+          className={`border-[1px] !border-green-500 !shadow-card-shadow placeholder:opacity-100 placeholder:text-white/80 text-white ${
             isEditMode ? "" : "bg-transparent cursor-default"
           }`}
           labelProps={{
