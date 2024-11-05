@@ -28,7 +28,19 @@ export const registerUser = async (req: express.Request, res: express.Response) 
   try {
     const { name, email, password, imageUrl=null } = req.body;
     const stellarAccount = Keypair.random();
-    const docRef = db.collection('users').doc(stellarAccount.publicKey());
+    const publicKey = stellarAccount.publicKey();
+    await axios.get(`https://friendbot.stellar.org/?addr=${publicKey}`);
+    
+    const usersCollection = db.collection('users');
+
+    // Check if the email already exists in the database
+    const emailCheck = await usersCollection.where('email', '==', email).get();
+    if (!emailCheck.empty) {
+      res.status(400).send({ message: 'Email already in use. Please use a different email.' });
+      return;
+    }
+
+    const docRef = usersCollection.doc(stellarAccount.publicKey());
     const newUser: User = {
       id: stellarAccount.publicKey(),
       name,
@@ -89,7 +101,7 @@ export const loginUser = async (req: express.Request, res: express.Response) => 
 
 export const getUserByEmail = async (req: express.Request, res: express.Response) => {
   try {
-    const { email } = (req as any).user;
+    const { email } = req.body;
 
     const usersRef = db.collection('users');
     const snapshot = await usersRef.where('email', '==', email).get();
@@ -145,5 +157,5 @@ const registeryManager = express.Router();
 
 registeryManager.post('/registerUser', registerUser);
 registeryManager.post('/loginUser', loginUser);
-registeryManager.get('/getUserByEmail', authenticateToken, getUserByEmail);
+registeryManager.post('/getUserByEmail', authenticateToken, getUserByEmail);
 export default registeryManager;

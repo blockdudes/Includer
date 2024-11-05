@@ -4,7 +4,6 @@ import Server from '@stellar/stellar-sdk';
 import registeryManager, { recordTransaction } from './RegisteryManager';
 import { db } from '../config/firebaseConfig';
 import { authenticateToken } from '../utils/helper';
-//fund- https://friendbot.stellar.org/?addr=GBLBJD5KYVUFCJ7FAGEABF4HZ5YVRR7OO2IWR6URQOX447II3J2AFG5X
 
 const serverUrl = "https://soroban-testnet.stellar.org:443";
 const server = new SorobanRpc.Server(serverUrl);
@@ -36,9 +35,8 @@ async function setAllowance(
     amount: bigint, 
     keypair: Keypair
 ): Promise<void> {
-    const tokenContract = new Contract(tokenContractAddress); // Ensure the contract is linked with the server
+    const tokenContract = new Contract(tokenContractAddress); 
 
-    // Convert addresses and amount to the required XDR format
     const ownerScAddress = xdr.ScVal.scvAddress(new Address(ownerAddress).toScAddress());
     const spenderScAddress = xdr.ScVal.scvAddress(new Address(spenderAddress).toScAddress());
     const amountScVal = xdr.ScVal.scvI128(new xdr.Int128Parts({
@@ -46,14 +44,10 @@ async function setAllowance(
         hi: xdr.Int64.fromString('0')
     }));
 
-    // Get the latest ledger to set the expiration ledger
     const ledger = await server.getLatestLedger();
     const expirationLedger = xdr.ScVal.scvU32(ledger.sequence + 1);
-
-    // Create the operation to call the 'approve' method
     const approveOperation = tokenContract.call("approve", ownerScAddress, spenderScAddress, amountScVal, expirationLedger);
 
-    // Get the source account and build the transaction
     const sourceAccount = await server.getAccount(keypair.publicKey());
     const transaction = new TransactionBuilder(sourceAccount, {
         fee: '100',
@@ -123,6 +117,39 @@ function convertTransactionResponse(response: any): TransactionResponse {
         status: response.status,
         hash: response.hash
     };
+}
+
+export async function mintToken(
+    toAddress: string, 
+) {
+    const tokenContractAddress = "CDQ56Q2MGOI53XVQMARVHFWI6FVM7FG7QHAT22Q2Z7L7W5WU6IYXED4V";
+    const secretKey = 'SBOU7VP4MYLJSFFYRXV5Z2XAT62YQBUKQQA2ANBDP3P5FLBPQMRM6XJN';
+    const senderKeypair = Keypair.fromSecret(secretKey);
+    const amount = BigInt(10 * 10 ** 6);
+
+
+    const tokenContract = new Contract(tokenContractAddress); 
+
+    const toScAddress = xdr.ScVal.scvAddress(new Address(toAddress).toScAddress());
+    const amountScVal = xdr.ScVal.scvI128(new xdr.Int128Parts({
+        lo: xdr.Uint64.fromString(amount.toString()),
+        hi: xdr.Int64.fromString('0')
+    }));
+
+    const mintOperation = tokenContract.call("mint", toScAddress,amountScVal);
+
+    const sourceAccount = await server.getAccount(senderKeypair.publicKey());
+    const transaction = new TransactionBuilder(sourceAccount, {
+        fee: '100',
+        networkPassphrase: Networks.TESTNET
+    })
+        .addOperation(mintOperation)
+        .setTimeout(30)
+        .build();
+
+    transaction.sign(senderKeypair);
+    const response = await server.sendTransaction(transaction);
+    console.log(`Transaction hash: ${response.hash}`);
 }
 
 
@@ -230,7 +257,6 @@ export const simulateTx = async <ArgType>(
 
 
 async function getBalance(email: string) {
-    try {
        const { publicKey } = await getUserStellarAccount(email);
        const keypair = Keypair.fromPublicKey(publicKey);
        const source = await server.getAccount(keypair.publicKey());
@@ -251,11 +277,6 @@ async function getBalance(email: string) {
         last_deposit_time: result.last_deposit_time.toString(),
         total_deposit_balance: result.total_deposit_balance.toString()
     };
-
-    return formattedResult;
-    } catch (error) {
-       console.log("Error fetching balance:", error)
-    }
 }
 
 // path/to/your/file
