@@ -61,7 +61,7 @@ const LoanCalculator = () => {
         </div>
         <div>
           <div>
-            <p className="text-sm text-gray-600">Total Repayment</p>
+            <p className="text-sm">Total Repayment</p>
             <p className="text-xl font-bold">$0.00</p>
           </div>
         </div>

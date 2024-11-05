@@ -186,7 +186,7 @@ const SignUpForm = () => {
                 onChange={handleChange}
                 className="w-full pl-12 px-2 py-2 rounded-md border-[0.1px] border-white/30 bg-white/10 text-sm placeholder:text-sm placeholder:text-gray-500 text-white"
                 required
-                pattern="^.{8}$"
+                pattern="^.{8,}$"
               />
             </div>
           </div>

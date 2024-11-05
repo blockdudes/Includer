@@ -199,7 +199,7 @@ const TransactionHistoryTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const rowsPerPage = 12;
+  const rowsPerPage = 11;
 
   const filteredTransactions = transactions
     .filter((transaction) =>
@@ -244,7 +244,7 @@ const TransactionHistoryTable = () => {
   };
 
   return (
-    <div className="h-full w-full flex flex-col gap-2 rounded-3xl bg-card-background-gradient shadow-card-shadow p-4">
+    <div className="h-full w-full flex flex-col gap-4 rounded-3xl bg-card-background-gradient shadow-card-shadow p-4">
       <h1 className="text-2xl font-semibold">Transaction History</h1>
       <div className="flex items-center gap-4">
         <Input
@@ -253,7 +253,7 @@ const TransactionHistoryTable = () => {
           placeholder="Search by ID or recipient..."
           value={searchTerm}
           onChange={handleSearchChange}
-          className="p-2 !border !border-white placeholder:opacity-100 placeholder:text-white rounded-full w-full"
+          className="p-2 !border-none shadow-card-shadow placeholder:opacity-100 placeholder:text-white rounded-full w-full"
           labelProps={{
             className: "hidden",
           }}
@@ -266,10 +266,11 @@ const TransactionHistoryTable = () => {
           <Select
             value={statusFilter}
             onChange={handleStatusFilterChange}
-            className="p-2 rounded-3xl bg-card-background-gradient border-none"
+            className="p-2 rounded-3xl bg-card-background-gradient shadow-card-shadow text-white border-none"
             labelProps={{ className: "hidden" }}
             menuProps={{
-              className: "bg-card-background-gradient backdrop-blur-md p-2",
+              className:
+                "bg-card-background-gradient text-white backdrop-blur-md p-2",
             }}
             containerProps={{
               className: "bg-card-background-gradient rounded-3xl",
@@ -285,10 +286,10 @@ const TransactionHistoryTable = () => {
           </Select>
         </div>
       </div>
-      <div className="overflow-auto rounded-lg">
+      <div className="overflow-auto rounded-xl shadow-card-shadow">
         <table className="min-w-full text-left">
           <thead>
-            <tr className="bg-electric-yellow/50">
+            <tr>
               <th className="py-2 px-4">ID</th>
               <th className="py-2 px-4">Amount</th>
               <th className="py-2 px-4">To/From</th>
