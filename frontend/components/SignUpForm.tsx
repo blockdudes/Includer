@@ -3,6 +3,7 @@ import { Button } from "@material-tailwind/react";
 import Link from "next/link";
 import { useState } from "react";
 import { BsGoogle } from "react-icons/bs";
+import axios from "axios";
 
 const SignUpForm = () => {
   const [formData, setFormData] = useState({
@@ -18,10 +19,22 @@ const SignUpForm = () => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission logic here
-    console.log(formData);
+
+    const name = `${formData.firstName} ${formData.lastName}`;
+    console.log(name);
+
+    try {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/registerUser`, {
+        name,
+        email: formData.email,
+        password: formData.password
+      })
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -33,7 +46,7 @@ const SignUpForm = () => {
           <Button
             size="md"
             className="w-full flex items-center justify-center gap-2 bg-white/10"
-            onClick={async () => {}}
+            onClick={async () => { }}
             placeholder={undefined}
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
@@ -186,7 +199,7 @@ const SignUpForm = () => {
                 onChange={handleChange}
                 className="w-full pl-12 px-2 py-2 rounded-md border-[0.1px] border-white/30 bg-white/10 text-sm placeholder:text-sm placeholder:text-gray-500 text-white"
                 required
-                pattern="^.{8}$"
+                pattern="^.{8,}$"
               />
             </div>
           </div>

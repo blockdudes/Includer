@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@material-tailwind/react";
+import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";
 import { BsGoogle } from "react-icons/bs";
@@ -16,10 +17,19 @@ const SignInForm = () => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Handle sign-in logic here
     console.log(formData);
+
+    try {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/loginUser`, {
+        email: formData.email,
+        password: formData.password
+      })
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -30,7 +40,7 @@ const SignInForm = () => {
           <Button
             size="md"
             className="w-full flex items-center justify-center gap-2 bg-white/10"
-            onClick={async () => {}}
+            onClick={async () => { }}
             placeholder={undefined}
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
