@@ -259,16 +259,18 @@ async function getBalance(email: string) {
 }
 
 // path/to/your/file
-async function transferFunds(email: string, recipientEmail: string, amount: bigint): Promise<void> {
+async function transferFunds(req: express.Request, res: express.Response): Promise<void> {
     try {
+        const { email, recipientEmail, amount } = req.body;
         const sender = await getUserStellarAccount(email);
         const recipient = await getUserStellarAccount(recipientEmail);
     
         const senderKeypair = Keypair.fromSecret(sender.privateKey);
     
         const response = await transferToken(sender.publicKey, recipient.publicKey, amount, senderKeypair);
+        res.status(200).send({ message: "Transfer successful", response });
     } catch (error) {
-        throw new Error(`Transfer failed: ${error as Error || 'Unknown error'}`);
+        res.status(500).send({ message: "Transfer failed", error: (error as Error).message });
     }
 }
 
@@ -280,6 +282,7 @@ transactionManager.post('/repay', authenticateToken, (req, res) => executeTransa
 transactionManager.post('/withdraw', authenticateToken, (req, res) => executeTransaction(req, res, "withdraw_token"));
 transactionManager.post('/borrow', authenticateToken, (req, res) => executeTransaction(req, res, "borrow_token"));
 transactionManager.post('/setAllowance', authenticateToken, (req, res) => executeTransaction(req, res, "setAllowance"));
+transactionManager.post('/transfer', authenticateToken, (req, res) => transferFunds(req, res));
 
 
 const jsonString = (data: any) => JSON.stringify(data, (key, value) =>
