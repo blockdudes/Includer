@@ -18,7 +18,7 @@ const SettingsPage = () => {
             <Button
               variant={selectedTab === "profile" ? "gradient" : "text"}
               size="md"
-              className={`w-full text-xl font-semibold text-yellow-400 ${
+              className={`w-full text-xl font-semibold text-white ${
                 selectedTab === "profile"
                   ? "!bg-card-background-gradient shadow-card-shadow"
                   : ""
@@ -33,7 +33,7 @@ const SettingsPage = () => {
             <Button
               variant={selectedTab === "account" ? "gradient" : "text"}
               size="md"
-              className={`w-full text-xl font-semibold text-yellow-400 ${
+              className={`w-full text-xl font-semibold text-white ${
                 selectedTab === "account"
                   ? "!bg-card-background-gradient shadow-card-shadow"
                   : ""

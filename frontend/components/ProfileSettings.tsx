@@ -56,6 +56,7 @@ const ProfileSettings = () => {
       <h2 className="text-2xl font-semibold">Profile Settings</h2>
       <div className="flex flex-col items-center gap-2">
         <div className="relative">
+        <div className="h-32 w-32 rounded-full bg-gray-400 flex justify-center items-center">
           <img
             src={profilePhoto || "/default-profile.png"}
             alt="Profile"
@@ -70,19 +71,20 @@ const ProfileSettings = () => {
             />
           )}
         </div>
-        <p className="text-sm text-yellow-400">
+        </div>
+        <p className="text-sm text-white">
           {isEditMode ? "Click to change profile photo" : "Profile Photo"}
         </p>
       </div>
       <div>
-        <label className="text-lg text-yellow-400">First Name</label>
+        <label className="text-lg text-white">First Name</label>
         <Input
           placeholder="First Name"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
           size="md"
           readOnly={!isEditMode}
-          className={`border !border-yellow-400 placeholder:opacity-100 placeholder:text-yellow-200 text-yellow-400 ${
+          className={`border !border-white placeholder:opacity-100 placeholder:text-white/80 text-white ${
             isEditMode ? "" : "bg-transparent cursor-default"
           }`}
           labelProps={{
@@ -94,14 +96,14 @@ const ProfileSettings = () => {
         />
       </div>
       <div>
-        <label className="text-lg text-yellow-400">Last Name</label>
+        <label className="text-lg text-white">Last Name</label>
         <Input
           placeholder="Last Name"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
           size="md"
           readOnly={!isEditMode}
-          className={`border !border-yellow-400 placeholder:opacity-100 placeholder:text-yellow-200 text-yellow-400 ${
+          className={`border !border-white placeholder:opacity-100 placeholder:text-white/80 text-white ${
             isEditMode ? "" : "bg-transparent cursor-default"
           }`}
           labelProps={{
@@ -113,14 +115,14 @@ const ProfileSettings = () => {
         />
       </div>
       <div>
-        <label className="text-lg text-yellow-400">Username</label>
+        <label className="text-lg text-white">Username</label>
         <Input
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           size="md"
           readOnly={!isEditMode}
-          className={`border !border-yellow-400 placeholder:opacity-100 placeholder:text-yellow-200 text-yellow-400 ${
+          className={`border !border-white placeholder:opacity-100 placeholder:text-white/80 text-white ${
             isEditMode ? "" : "bg-transparent cursor-default"
           }`}
           labelProps={{
