@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Keypair } from '@stellar/stellar-sdk';
 import { db } from '../config/firebaseConfig';
 import Stripe from 'stripe';
+import bodyParser from 'body-parser';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
     apiVersion: '2024-10-28.acacia',
@@ -13,20 +14,16 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
       bodyParser: false,
     },
   };
-  
-  async function buffer(req: express.Request) {
-    const chunks = [];
-    const reader = req.body?.getReader();
-    if (reader) {
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        if (value) chunks.push(value);
-      }
-    }
-    return Buffer.concat(chunks);
-  }
 
+  const getRawBody = async (req: any) => {
+    return new Promise((resolve, reject) => {
+        const chunks: any[] = [];
+        req.on('data', (chunk: any) => chunks.push(chunk));
+        req.on('end', () => resolve(Buffer.concat(chunks)));
+        req.on('error', (err: any) => reject(err));
+    });
+};
+  
   async function grantAccessToUser(session: Stripe.Checkout.Session) {
     const customerEmail = session.customer_email;
     if (customerEmail) {
@@ -65,23 +62,25 @@ export const createPaymentSession = async (req: express.Request, res: express.Re
   export const webhook = async (req: express.Request, res: express.Response) => {
     let event;
     try {
-      const rawBody = await buffer(req);
+      const rawBody = await getRawBody(req);
       const signature = req.headers["stripe-signature"];
   
       if (!signature) {
         console.error("Missing Stripe signature");
         res.status(400).json({ error: "Missing Stripe signature" });
+        return;
       }
   
       // Attempt to construct the event with the webhook secret
       event = stripe.webhooks.constructEvent(
-        rawBody,
+        rawBody as string,
         signature as string,
         process.env.WEBHOOK_KEY!
       );
     } catch (err: any) {
       console.error("Webhook signature verification failed:", err.message);
       res.status(400).json({ error: `Webhook Error: ${err.message}` });
+      return;
     }
   
     // Process the event

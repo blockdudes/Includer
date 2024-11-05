@@ -277,6 +277,7 @@ async function getBalance(email: string) {
         last_deposit_time: result.last_deposit_time.toString(),
         total_deposit_balance: result.total_deposit_balance.toString()
     };
+    return formattedResult;
 }
 
 // path/to/your/file
