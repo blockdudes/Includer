@@ -66,7 +66,7 @@ const SuperSavingsInvestment = () => {
         <Button
           size="lg"
           type="submit"
-          className="w-full bg-card-background-gradient text-white py-3 px-6 rounded-lg hover:bg-card-background-gradient transition-colors"
+          className="w-full bg-card-background-gradient !shadow-card-shadow hover:shadow-xl text-white py-3 px-6 rounded-lg hover:bg-card-background-gradient transition-colors"
           placeholder={undefined}
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}

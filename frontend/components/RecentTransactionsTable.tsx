@@ -42,10 +42,10 @@ const RecentTransactionsTable = () => {
   return (
     <div className="col-span-2 row-span-3 flex flex-col gap-4 rounded-3xl bg-card-background-gradient shadow-card-shadow p-4">
       <h1 className="text-2xl font-semibold">Recent Transactions</h1>
-      <div className="overflow-auto rounded-lg">
+      <div className="overflow-auto rounded-xl shadow-card-shadow">
         <table className="min-w-full text-left">
           <thead>
-            <tr className="bg-electric-yellow/50">
+            <tr>
               <th className="py-2 px-4">ID</th>
               <th className="py-2 px-4">Amount</th>
               <th className="py-2 px-4">To</th>

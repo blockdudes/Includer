@@ -16,12 +16,12 @@ const SettingsPage = () => {
         <div className="h-[calc(100%-3rem)] grid grid-cols-5 items-center gap-4">
           <div className="h-full bg-card-background-gradient rounded-3xl shadow-card-shadow p-4 flex flex-col gap-2">
             <Button
-              variant={selectedTab === "profile" ? "gradient" : "text"}
+              variant="text"
               size="md"
               className={`w-full text-xl font-semibold text-white ${
                 selectedTab === "profile"
-                  ? "!bg-card-background-gradient shadow-card-shadow"
-                  : ""
+                  ? "bg-transparent !shadow-card-shadow"
+                  : "bg-transparent"
               } normal-case`}
               onClick={() => setSelectedTab("profile")}
               placeholder={undefined}
@@ -31,12 +31,12 @@ const SettingsPage = () => {
               Profile
             </Button>
             <Button
-              variant={selectedTab === "account" ? "gradient" : "text"}
+              variant="text"
               size="md"
               className={`w-full text-xl font-semibold text-white ${
                 selectedTab === "account"
-                  ? "!bg-card-background-gradient shadow-card-shadow"
-                  : ""
+                  ? "bg-transparent !shadow-card-shadow"
+                  : "bg-transparent"
               } normal-case`}
               onClick={() => setSelectedTab("account")}
               placeholder={undefined}

@@ -7,7 +7,7 @@ const LoanActions = () => {
     <div className="grid grid-cols-2 gap-4">
       <Button
         size="lg"
-        className="bg-card-background-gradient rounded-lg"
+        className="bg-card-background-gradient !shadow-card-shadow rounded-lg"
         placeholder={undefined}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}
@@ -16,7 +16,7 @@ const LoanActions = () => {
       </Button>
       <Button
         size="lg"
-        className="bg-card-background-gradient rounded-lg"
+        className="bg-card-background-gradient !shadow-card-shadow rounded-lg"
         placeholder={undefined}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}

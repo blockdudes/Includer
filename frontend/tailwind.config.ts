@@ -8,10 +8,10 @@ module.exports = withMT({
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "card-background-gradient":
-          "linear-gradient(to bottom, #E1E7388F, #39FF148F)",
-      },
+      // backgroundImage: {
+      //   "card-background-gradient":
+      //     "linear-gradient(to bottom, #E1E7388F, #39FF148F)",
+      // },
       colors: {
         "neon-green": "#39FF14",
         "electric-yellow": "#FFFF33",
