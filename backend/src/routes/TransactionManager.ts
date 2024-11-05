@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {  Keypair, TransactionBuilder, BASE_FEE, Networks, Operation, Asset, SorobanRpc, Contract, Address, xdr, contract, Transaction, Memo, MemoType, scValToNative } from '@stellar/stellar-sdk';
 import Server from '@stellar/stellar-sdk';
-import registeryManager from './RegisteryManager';
+import registeryManager, { recordTransaction } from './RegisteryManager';
 import { db } from '../config/firebaseConfig';
 import { authenticateToken } from '../utils/helper';
 //fund- https://friendbot.stellar.org/?addr=GBLBJD5KYVUFCJ7FAGEABF4HZ5YVRR7OO2IWR6URQOX447II3J2AFG5X
@@ -60,6 +60,45 @@ async function setAllowance(
         networkPassphrase: Networks.TESTNET
     })
         .addOperation(approveOperation)
+        .setTimeout(30)
+        .build();
+
+    // Sign and send the transaction
+    transaction.sign(keypair);
+    const response = await server.sendTransaction(transaction);
+    console.log(`Transaction hash: ${response.hash}`);
+}
+
+async function transferToken(
+    fromAddress: string, 
+    toAddress: string, 
+    amount: bigint, 
+    keypair: Keypair
+): Promise<void> {
+    const tokenContract = new Contract(tokenContractAddress); // Ensure the contract is linked with the server
+
+    // Convert addresses and amount to the required XDR format
+    const fromScAddress = xdr.ScVal.scvAddress(new Address(fromAddress).toScAddress());
+    const toScAddress = xdr.ScVal.scvAddress(new Address(toAddress).toScAddress());
+    const amountScVal = xdr.ScVal.scvI128(new xdr.Int128Parts({
+        lo: xdr.Uint64.fromString(amount.toString()),
+        hi: xdr.Int64.fromString('0')
+    }));
+
+    // Get the latest ledger to set the expiration ledger
+    const ledger = await server.getLatestLedger();
+    const expirationLedger = xdr.ScVal.scvU32(ledger.sequence + 1);
+
+    // Create the operation to call the 'transfer' method
+    const transferOperation = tokenContract.call("transfer", fromScAddress, toScAddress, amountScVal, expirationLedger);
+
+    // Get the source account and build the transaction
+    const sourceAccount = await server.getAccount(keypair.publicKey());
+    const transaction = new TransactionBuilder(sourceAccount, {
+        fee: '100',
+        networkPassphrase: Networks.TESTNET
+    })
+        .addOperation(transferOperation)
         .setTimeout(30)
         .build();
 
@@ -152,6 +191,7 @@ async function executeTransaction(req: express.Request, res: express.Response, c
     const { email, amount } = req.body;
     try {
         await handleTransaction(email, BigInt(amount), contractMethod);
+        await recordTransaction(email, contractMethod, amount);
         res.status(200).send(`${contractMethod} successful`);
     } catch (error) {
         console.log("error", error)
@@ -218,6 +258,20 @@ async function getBalance(email: string) {
     }
 }
 
+// path/to/your/file
+async function transferFunds(email: string, recipientEmail: string, amount: bigint): Promise<void> {
+    try {
+        const sender = await getUserStellarAccount(email);
+        const recipient = await getUserStellarAccount(recipientEmail);
+    
+        const senderKeypair = Keypair.fromSecret(sender.privateKey);
+    
+        const response = await transferToken(sender.publicKey, recipient.publicKey, amount, senderKeypair);
+    } catch (error) {
+        throw new Error(`Transfer failed: ${error as Error || 'Unknown error'}`);
+    }
+}
+
 const transactionManager = express.Router();
 
 // Map the routes to the executeTransaction function with the appropriate contract method
@@ -238,6 +292,7 @@ transactionManager.get('/getBalance/:email', authenticateToken, (req, res) => {
         .then(result => res.status(200).send({ message: "Balance fetched successfully", balance: result }))
         .catch(error => res.status(500).send({ message: "Failed to fetch balance", error: error.message }));
 });
+
 
 export default transactionManager;
     

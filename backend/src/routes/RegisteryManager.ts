@@ -13,6 +13,7 @@ interface User {
   imageUrl: string;
   publicKey: string;
   privateKey: string;
+  history?: any;
 }
 
 interface UserResponse {
@@ -119,6 +120,26 @@ export const getUserByEmail = async (req: express.Request, res: express.Response
     res.status(500).send({ message: 'Failed to retrieve user', error: (error as Error).message });
   }
 };
+
+export async function recordTransaction(email: string, transactionType: string, amount: number): Promise<void> {
+  const usersRef = db.collection('users');
+  const snapshot = await usersRef.where('email', '==', email).get();
+
+  if (snapshot.empty) {
+      console.log('No such user!');
+      return;
+  }
+
+  const userDoc = snapshot.docs[0];
+  const userData = userDoc.data() as User;
+
+  const currentTransactions = userData.history || [];
+  currentTransactions.push({ type: transactionType, amount, timestamp: new Date().toISOString() });
+
+  await userDoc.ref.update({
+      history: currentTransactions
+  });
+}
 
 const registeryManager = express.Router();
 
