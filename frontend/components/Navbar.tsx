@@ -2,16 +2,22 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { FaCog, FaHandHoldingUsd, FaHistory } from "react-icons/fa";
+import { FaHandHoldingUsd, FaHistory } from "react-icons/fa";
 import { FaWallet } from "react-icons/fa6";
 import { TbHomeFilled } from "react-icons/tb";
 import UserProfileMenu from "./UserProfileMenu";
 
 const Navbar = () => {
   const pathname = usePathname();
-  if (pathname === "/" || pathname === "/login" || pathname === "/signup") {
+  if (
+    pathname === "/" ||
+    pathname === "/login" ||
+    pathname === "/signup" ||
+    pathname.startsWith("/callback")
+  ) {
     return null;
   }
+
   const links = [
     {
       name: "Home",
@@ -33,11 +39,6 @@ const Navbar = () => {
       name: "History",
       path: "/history",
       icon: <FaHistory />,
-    },
-    {
-      name: "Settings",
-      path: "/settings",
-      icon: <FaCog />,
     },
   ];
 

@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import ReduxProvider from "@/lib/ReduxProvider";
+import { Toaster } from "react-hot-toast";
+import VerifyAuth from "@/lib/verifyAuth";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,8 +33,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen w-screen bg-[url('/background.svg')] bg-cover text-white overflow-hidden`}
       >
         <ReduxProvider>
-          <Navbar />
-          <main className="h-[calc(100%-6rem)]">{children}</main>
+          <VerifyAuth>
+            <Navbar />
+            <main className="h-[calc(100%-6rem)]">{children}</main>
+            <Toaster containerStyle={{ zIndex: 9999 }} />
+          </VerifyAuth>
         </ReduxProvider>
       </body>
     </html>

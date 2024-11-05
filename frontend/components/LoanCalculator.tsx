@@ -1,10 +1,36 @@
 "use client";
+import { useAppSelector } from "@/lib/hooks";
 import { Input, Option, Select } from "@material-tailwind/react";
 import React, { useState } from "react";
 
 const LoanCalculator = () => {
+  const { contractBalance } = useAppSelector((state) => state.user);
+  const maxBorrowableAmount = 1000;
+  // Number(contractBalance?.total_deposit_balance) * 0.8;
   const [loanAmount, setLoanAmount] = useState(0);
   const [duration, setDuration] = useState("1");
+
+  const calculateTotalRepayment = (loanAmount: number) => {
+    const interestRate =
+      loanAmount < 0
+        ? -999
+        : loanAmount / maxBorrowableAmount <= 0.4
+        ? 0.02
+        : loanAmount / maxBorrowableAmount <= 0.6
+        ? 0.03
+        : loanAmount / maxBorrowableAmount <= 0.8
+        ? 0.04
+        : -1;
+
+    if (interestRate === -999) {
+      return "Invalid loan amount";
+    }
+    if (interestRate === -1) {
+      return "Loan amount exceeds maximum borrowable amount";
+    }
+
+    return `$${(loanAmount * (1 + interestRate)).toFixed(2).toLocaleString()}`;
+  };
 
   return (
     <div className="bg-card-background-gradient shadow-card-shadow p-4 rounded-lg">
@@ -63,7 +89,9 @@ const LoanCalculator = () => {
         <div>
           <div>
             <p className="text-sm">Total Repayment</p>
-            <p className="text-xl font-bold">$0.00</p>
+            <p className="text-xl font-bold">
+              {calculateTotalRepayment(loanAmount)}
+            </p>
           </div>
         </div>
       </form>

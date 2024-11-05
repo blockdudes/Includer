@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 // creating routes
 app.use("/api", registeryManager);
 app.use("/api", transactionManager);
-app.use("/api", stripeManager);
+// app.use("/api", stripeManager);
 
 // Error handling middleware
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {

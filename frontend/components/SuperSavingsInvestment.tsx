@@ -1,10 +1,12 @@
 "use client";
-import { Button, Input, Option, Select } from "@material-tailwind/react";
+import { useAppSelector } from "@/lib/hooks";
+import { handleSuperSavingsInvest } from "@/utils/helper";
+import { Button, Input } from "@material-tailwind/react";
 import React, { useState } from "react";
 
 const SuperSavingsInvestment = () => {
+  const { user } = useAppSelector((state) => state.user);
   const [amount, setAmount] = useState(0);
-  const [timeFrame, setTimeFrame] = useState("3");
 
   return (
     <div className="bg-card-background-gradient shadow-card-shadow p-6 rounded-3xl">
@@ -39,7 +41,9 @@ const SuperSavingsInvestment = () => {
         </div>
         <Button
           size="lg"
-          type="submit"
+          onClick={() => {
+            handleSuperSavingsInvest(user?.email, amount);
+          }}
           className="w-full bg-card-background-gradient !shadow-card-shadow hover:shadow-xl text-white py-3 px-6 rounded-lg hover:bg-card-background-gradient transition-colors"
           placeholder={undefined}
           onPointerEnterCapture={undefined}

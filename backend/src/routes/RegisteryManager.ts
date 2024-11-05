@@ -22,6 +22,7 @@ interface UserResponse {
   email: string;
   imageUrl: string;
   publicKey: string;
+  history?: any;
 }
 
 export const registerUser = async (req: express.Request, res: express.Response) => {
@@ -119,6 +120,7 @@ export const getUserByEmail = async (req: express.Request, res: express.Response
         email: data.email,
         imageUrl: data.imageUrl,
         publicKey: data.publicKey,
+        history: data.history,
       };
     });
 

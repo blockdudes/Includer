@@ -2,10 +2,15 @@
 import { Button } from "@material-tailwind/react";
 import Link from "next/link";
 import { useState } from "react";
-import { BsGoogle } from "react-icons/bs";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { getUserData } from "@/lib/reducers/user_data_slice";
+import { useAppDispatch } from "@/lib/hooks";
+import toast from "react-hot-toast";
 
 const SignUpForm = () => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -22,9 +27,8 @@ const SignUpForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission logic here
-
+    const loader = toast.loading("Signing up...");
     const name = `${formData.firstName} ${formData.lastName}`;
-    console.log(name);
 
     try {
       const response = await axios.post(
@@ -35,8 +39,19 @@ const SignUpForm = () => {
           password: formData.password,
         }
       );
+      toast.dismiss(loader);
+      if (response.status === 200) {
+        const token = response.data.token;
+        localStorage.setItem("token", token);
+        toast.success("Signed up successfully");
+        toast("Please login to continue");
+        router.push("/login");
+      } else {
+        toast.error("Something went wrong");
+      }
     } catch (error) {
-      console.log(error);
+      toast.dismiss(loader);
+      toast.error("Something went wrong");
     }
   };
 

@@ -1,11 +1,16 @@
 "use client";
+import { useAppDispatch } from "@/lib/hooks";
+import { getUserData } from "@/lib/reducers/user_data_slice";
 import { Button } from "@material-tailwind/react";
 import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { BsGoogle } from "react-icons/bs";
+import toast from "react-hot-toast";
 
 const SignInForm = () => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     // emailOrUsername: "",
     email: "",
@@ -20,7 +25,7 @@ const SignInForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Handle sign-in logic here
-    console.log(formData);
+    const loader = toast.loading("Signing in...");
 
     try {
       const response = await axios.post(
@@ -30,8 +35,19 @@ const SignInForm = () => {
           password: formData.password,
         }
       );
+      toast.dismiss(loader);
+      if (response.status === 200) {
+        const token = response.data.token;
+        localStorage.setItem("token", token);
+        dispatch(getUserData(formData.email));
+        toast.success("Signed in successfully");
+        router.push("/dashboard");
+      } else {
+        toast.error("Something went wrong");
+      }
     } catch (error) {
-      console.log(error);
+      toast.dismiss(loader);
+      toast.error("Something went wrong");
     }
   };
 

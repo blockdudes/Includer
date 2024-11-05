@@ -1,15 +1,23 @@
 import React from "react";
 import FinanceDonutChart from "./FinanceDonutChart";
+import { useAppSelector } from "@/lib/hooks";
 
 const BalanceSummary = () => {
-  const currentBalanceData = [3000, 2000]; // Savings, Super Savings, Borrowed Amount
+  const { contractBalance } = useAppSelector((state) => state.user);
+  const currentBalanceData = [
+    Number(contractBalance?.total_deposit_balance),
+    Number(contractBalance?.total_deposit_balance),
+  ]; // Savings, Super Savings, Borrowed Amount
   const currentBalanceLabels = ["Savings Account", "Super Savings"];
   const currentBalanceColors = ["#FDE74C", "#EE8434"];
   const totalBalance = currentBalanceData.reduce((acc, val) => acc + val, 0);
 
-  // Data for the second chart (Borrowed vs Repaid)
-  const borrowedVsRepaidData = [4283, 2334]; // Borrowed, Repaid
-  const borrowedVsRepaidLabels = ["Borrowed Amount", "Repaid Amount"];
+  // Data for the second chart (Total Balance vs Borrowed Amount)
+  const totalBalanceVsBorrowedData = [
+    Number(contractBalance?.total_deposit_balance),
+    Number(contractBalance?.borrow_balance),
+  ]; // Total Balance, Borrowed Amount
+  const borrowedVsRepaidLabels = ["Total Balance", "Borrowed Amount"];
   const borrowedVsRepaidColors = ["#FFCA3A", "#FF595E"];
 
   return (
@@ -18,7 +26,7 @@ const BalanceSummary = () => {
       <div className="h-[calc(100%-3rem)] w-full flex items-center gap-4">
         <div className="w-1/2">
           <FinanceDonutChart
-            data={currentBalanceData}
+            data={currentBalanceData.every((val) => val > 0) ? currentBalanceData : [1, 0]}
             labels={currentBalanceLabels}
             colors={currentBalanceColors}
           >
@@ -46,23 +54,25 @@ const BalanceSummary = () => {
         </div>
         <div className="w-1/2">
           <FinanceDonutChart
-            data={borrowedVsRepaidData}
+            data={totalBalanceVsBorrowedData.every((val) => val > 0)
+              ? totalBalanceVsBorrowedData
+              : [1, 0]}
             labels={borrowedVsRepaidLabels}
             colors={borrowedVsRepaidColors}
           >
             <div className="w-full flex flex-col items-center justify-start">
               <span className="w-full flex items-center justify-start gap-1">
-                <h3>Borrowed Amount:</h3>
+                <h3>Total Balance:</h3>
                 <p className="text-lg font-semibold">
-                  {`$${borrowedVsRepaidData
+                  {`$${totalBalanceVsBorrowedData
                     .reduce((acc, val) => acc + val, 0)
                     .toLocaleString()}`}
                 </p>
               </span>
               <span className="w-full flex items-center justify-start gap-1">
-                <h3>Repaid Amount:</h3>
+                <h3>Borrowed Amount:</h3>
                 <p className="text-lg font-semibold">
-                  {`$${borrowedVsRepaidData[1].toLocaleString()}`}
+                  {`$${totalBalanceVsBorrowedData[1].toLocaleString()}`}
                 </p>
               </span>
             </div>

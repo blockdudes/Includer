@@ -1,13 +1,18 @@
 "use client";
 import { Button, Input, Option, Select } from "@material-tailwind/react";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import CustomDialog from "./CustomDialog";
+import { useAppSelector } from "@/lib/hooks";
 
 const SavingsActions = () => {
+  const { user } = useAppSelector((state) => state.user);
   const [isWithdrawDialogOpen, setIsWithdrawDialogOpen] = useState(false);
+  const [isDepositDialogOpen, setIsDepositDialogOpen] = useState(false);
+  const depositFormRef = useRef<HTMLFormElement>(null);
   const [isTransferDialogOpen, setIsTransferDialogOpen] = useState(false);
   const [savingsType, setSavingsType] = useState("savings");
   const [withdrawAmount, setWithdrawAmount] = useState(0);
+  const [depositAmount, setDepositAmount] = useState(0);
   const [transferAmount, setTransferAmount] = useState(0);
 
   return (
@@ -111,19 +116,89 @@ const SavingsActions = () => {
           }
         />
       </>
-      <form action="/api/payment" method="POST" className="w-full">
-        <Button
-          size="lg"
-          className="w-full bg-card-background-gradient !shadow-card-shadow rounded-xl"
-          type="submit"
-          role="link"
-          placeholder={undefined}
-          onPointerEnterCapture={undefined}
-          onPointerLeaveCapture={undefined}
-        >
-          Deposit Funds
-        </Button>
-      </form>
+
+      <Button
+        size="lg"
+        className="w-full bg-card-background-gradient !shadow-card-shadow rounded-xl"
+        onClick={() => setIsDepositDialogOpen(true)}
+        placeholder={undefined}
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
+      >
+        Deposit Funds
+      </Button>
+      <CustomDialog
+        isOpen={isDepositDialogOpen}
+        setIsOpen={setIsDepositDialogOpen}
+        header="Deposit Funds"
+        body={
+          <div className="flex flex-col gap-2">
+            <span className="text-sm">
+              Deposit funds into your savings account. Enter the amount to
+              deposit.
+            </span>
+            <div>
+              <p>Amount</p>
+              <Input
+                name="quantity"
+                type="number"
+                size="md"
+                className={
+                  "!border-green-500 !border-[1px] !shadow-card-shadow placeholder:opacity-100 placeholder:text-white/80 text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                }
+                labelProps={{
+                  className: "hidden",
+                }}
+                value={depositAmount}
+                onChange={(e) => {
+                  if (e.target.value) {
+                    setDepositAmount(Number(e.target.value));
+                  }
+                }}
+                placeholder="Enter amount"
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+                crossOrigin={undefined}
+              />
+            </div>
+          </div>
+        }
+        footer={
+          <>
+            <Button
+              variant="text"
+              color="red"
+              onClick={() => setIsDepositDialogOpen(false)}
+              className="mr-1"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            >
+              <span>Cancel</span>
+            </Button>
+            <form
+              ref={depositFormRef}
+              action="/api/payment"
+              method="POST"
+              target="_blank"
+            >
+              <input type="hidden" name="quantity" value={depositAmount} />
+              <input type="hidden" name="email" value={user.email} />
+              <Button
+                variant="gradient"
+                color="green"
+                type="submit"
+                onClick={() => setIsDepositDialogOpen(false)}
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              >
+                <span>Confirm</span>
+              </Button>
+            </form>
+          </>
+        }
+      />
       <>
         <Button
           size="lg"
