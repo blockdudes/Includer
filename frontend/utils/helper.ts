@@ -35,3 +35,10 @@ export const handleContractSetAllowance = async (email: string, amount: number) 
         console.log(error)
     }
 }
+export const handleTransfer = async (email: string, recipientEmail: string, amount: number) => {
+    try {
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/transfer`, { email, recipientEmail, amount })
+    } catch (error) {
+        console.log(error);
+    }
+}
