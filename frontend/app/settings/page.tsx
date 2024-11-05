@@ -18,7 +18,7 @@ const SettingsPage = () => {
             <Button
               variant="text"
               size="md"
-              className={`w-full text-xl font-semibold text-white ${
+              className={`w-full rounded-xl text-xl font-semibold text-white ${
                 selectedTab === "profile"
                   ? "bg-transparent !shadow-card-shadow"
                   : "bg-transparent"
@@ -33,7 +33,7 @@ const SettingsPage = () => {
             <Button
               variant="text"
               size="md"
-              className={`w-full text-xl font-semibold text-white ${
+              className={`w-full rounded-xl text-xl font-semibold text-white ${
                 selectedTab === "account"
                   ? "bg-transparent !shadow-card-shadow"
                   : "bg-transparent"

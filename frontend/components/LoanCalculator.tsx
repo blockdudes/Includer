@@ -16,7 +16,7 @@ const LoanCalculator = () => {
             type="number"
             size="md"
             className={
-              "border !border-white placeholder:opacity-100 placeholder:text-white/80 text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              "!border-green-500 !border-[1px] !shadow-card-shadow placeholder:opacity-100 placeholder:text-white/80 text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             }
             labelProps={{
               className: "hidden",
@@ -36,7 +36,7 @@ const LoanCalculator = () => {
         <div>
           <label>Duration</label>
           <Select
-            className="w-full p-2 border !border-white placeholder:opacity-100 placeholder:text-white/80 text-white stroke-white"
+            className="w-full p-2 border-[1px] !border-green-500 !shadow-card-shadow placeholder:opacity-100 placeholder:text-white/80 text-white stroke-white"
             labelProps={{
               className: "hidden",
             }}

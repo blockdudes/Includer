@@ -253,7 +253,7 @@ const TransactionHistoryTable = () => {
           placeholder="Search by ID or recipient..."
           value={searchTerm}
           onChange={handleSearchChange}
-          className="p-2 !border-none shadow-card-shadow placeholder:opacity-100 placeholder:text-white rounded-full w-full"
+          className="p-2 border-[1px] !border-green-500 !shadow-card-shadow placeholder:opacity-100 placeholder:text-white rounded-full w-full"
           labelProps={{
             className: "hidden",
           }}
@@ -266,7 +266,7 @@ const TransactionHistoryTable = () => {
           <Select
             value={statusFilter}
             onChange={handleStatusFilterChange}
-            className="p-2 rounded-3xl bg-card-background-gradient shadow-card-shadow text-white border-none"
+            className="p-2 rounded-3xl bg-card-background-gradient shadow-card-shadow text-white border-[1px] !border-green-500"
             labelProps={{ className: "hidden" }}
             menuProps={{
               className:

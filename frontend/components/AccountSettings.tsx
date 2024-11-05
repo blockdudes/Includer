@@ -49,7 +49,7 @@ const AccountSettings = () => {
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
               size="md"
-              className="border !border-white placeholder:opacity-100 placeholder:text-white/80 text-white"
+              className="border-[1px] !border-green-500 !shadow-card-shadow placeholder:opacity-100 placeholder:text-white/80 text-white"
               labelProps={{
                 className: "hidden",
               }}
@@ -62,7 +62,7 @@ const AccountSettings = () => {
               type="password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              className="border !border-white placeholder:opacity-100 placeholder:text-white/80 text-white"
+              className="border-[1px] !border-green-500 !shadow-card-shadow placeholder:opacity-100 placeholder:text-white/80 text-white"
               labelProps={{
                 className: "hidden",
               }}
@@ -76,7 +76,7 @@ const AccountSettings = () => {
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="border !border-white placeholder:opacity-100 placeholder:text-white/80 text-white"
+              className="border-[1px] !border-green-500 !shadow-card-shadow placeholder:opacity-100 placeholder:text-white/80 text-white"
               labelProps={{
                 className: "hidden",
               }}
