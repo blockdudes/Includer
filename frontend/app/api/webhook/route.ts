@@ -31,6 +31,16 @@ async function getUserByEmail(email: string) {
   return user.publicKey;
 }
 
+async function recordTransaction(email: string, transactionType: string, amount: string) {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/recordTransaction`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, transactionType, amount }),
+  });
+}
+
 export async function mintTokens(amount: string , email: string) {
 
   const toAddress = await getUserByEmail(email);
@@ -115,12 +125,20 @@ export async function POST(req: NextRequest) {
 
 // Example function to grant access to the user
 async function grantAccessToUser(session: Stripe.Checkout.Session) {
+  console.log('session',session)
   const paymentStatus = session.payment_status;
   const email = session.customer_details?.email;
-  const amount = BigInt(10 * 10 ** 6);
-  
+  const amount = session.amount_total ? session.amount_total / 100 : null;
+
   if (paymentStatus === "paid") {
     console.log(`Access granted to: ${paymentStatus}`);
-    email && await mintTokens(amount.toString(), email);
+    if (! email) {
+      throw new Error("Email not found");
+    }
+    if (! amount) {
+      throw new Error("Amount not found");
+    }
+    await mintTokens(amount.toString(), email);
+    await recordTransaction(email, "mint", amount.toString());
   }
 }

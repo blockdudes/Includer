@@ -153,9 +153,16 @@ export async function recordTransaction(email: string, transactionType: string, 
   });
 }
 
+export async function saveTransaction(req: express.Request, res: express.Response) {
+  const { email, transactionType, amount } = req.body;
+  await recordTransaction(email, transactionType, amount);
+  res.status(200).send({ message: 'Transaction recorded successfully' });
+}
+
 const registeryManager = express.Router();
 
 registeryManager.post('/registerUser', registerUser);
 registeryManager.post('/loginUser', loginUser);
 registeryManager.post('/getUserByEmail', getUserByEmail);
+registeryManager.post('/recordTransaction', saveTransaction);
 export default registeryManager;
