@@ -3,6 +3,7 @@ import Stripe from "stripe";
 
 export async function POST(req: NextRequest) {
   try {
+    const { quantity } = await req.json();
     const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY || "", {
       apiVersion: '2024-10-28.acacia',
     });
@@ -11,8 +12,8 @@ export async function POST(req: NextRequest) {
       line_items: [
         {
           // Use the exact Price ID of the product
-          price: 'price_1QHiEESF6nbQBJVio5oeaf9o',
-          quantity: 1,
+          price: 'price_1QHorrSF6nbQBJViGdVEjNtY',
+          quantity: quantity,
         },
       ],
       mode: 'payment',
@@ -25,10 +26,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Session URL is missing" }, { status: 500 });
     }
 
-    console.log('Redirecting to:', session.url);
-    return NextResponse.redirect(session.url, {
-        status: 303,
-    });
+    // console.log('Redirecting to:', session.url);
+    // return NextResponse.redirect(session.url, {
+    //     status: 303,
+    // });
+
+    return NextResponse.json({ url: session.url }, { status: 200 });
 
   } catch (error: any) {
     console.error("Stripe error:", error);

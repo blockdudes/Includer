@@ -157,5 +157,5 @@ const registeryManager = express.Router();
 
 registeryManager.post('/registerUser', registerUser);
 registeryManager.post('/loginUser', loginUser);
-registeryManager.post('/getUserByEmail', authenticateToken, getUserByEmail);
+registeryManager.post('/getUserByEmail', getUserByEmail);
 export default registeryManager;

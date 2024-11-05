@@ -1,7 +1,8 @@
-'use client';
+'use client'
 import React from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -22,22 +23,16 @@ export default function Home() {
     }
   }, []);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // Prevent the default form submission
-    try {
-      const stripe = await stripePromise;
-      const response = await fetch('http://localhost:8000/api/payment', {
-        method: 'POST',
-      });
-      const session = await response.json();
-      router.push(session.url);
-    } catch (error) {
-      console.error('Error:', error);
-    }
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const response = await axios.post('/api/payment', { quantity: 5 });
+    console.log(response)
+    router.push(response.data.url);
   };
 
   return (
-    <form onSubmit={handleSubmit} method="POST">
+    // action="/api/payment"
+    <form  onSubmit={handleSubmit} method="POST">
       <section>
         <button type="submit" role="link">
           Checkout

@@ -60,7 +60,7 @@ async function setAllowance(
     // Sign and send the transaction
     transaction.sign(keypair);
     const response = await server.sendTransaction(transaction);
-    console.log(`Transaction hash: ${response.hash}`);
+    console.log(`Allowance Transaction hash: ${response.hash}`);
 }
 
 async function transferToken(
