@@ -32,7 +32,7 @@ const SignUpForm = () => {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/registerUser`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}api/registerUser`,
         {
           name,
           email: formData.email,

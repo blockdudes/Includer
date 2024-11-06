@@ -11,7 +11,7 @@ const TransactionHistoryTable = () => {
     type: string;
     amount: string;
     timestamp: string;
-  }[] = (user?.history as any[]).map((transaction, index) => ({
+  }[] = (user?.history as any[] || []).map((transaction, index) => ({
     id: (index + 1).toString().padStart(4, "0"),
     type: transaction.type,
     amount: transaction.amount,

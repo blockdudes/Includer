@@ -27,11 +27,11 @@ interface UserResponse {
 
 export const registerUser = async (req: express.Request, res: express.Response) => {
   try {
-    const { name, email, password, imageUrl=null } = req.body;
+    const { name, email, password, imageUrl = null } = req.body;
     const stellarAccount = Keypair.random();
     const publicKey = stellarAccount.publicKey();
     await axios.get(`https://friendbot.stellar.org/?addr=${publicKey}`);
-    
+
     const usersCollection = db.collection('users');
 
     // Check if the email already exists in the database
@@ -46,7 +46,7 @@ export const registerUser = async (req: express.Request, res: express.Response) 
       id: stellarAccount.publicKey(),
       name,
       email,
-      password, 
+      password,
       imageUrl,
       publicKey: stellarAccount.publicKey(),
       privateKey: stellarAccount.secret(),
@@ -103,7 +103,7 @@ export const loginUser = async (req: express.Request, res: express.Response) => 
 export const getUserByEmail = async (req: express.Request, res: express.Response) => {
   try {
     const { email } = req.body;
-
+    console.log(email);
     const usersRef = db.collection('users');
     const snapshot = await usersRef.where('email', '==', email).get();
     if (snapshot.empty) {
@@ -140,8 +140,8 @@ export async function recordTransaction(email: string, transactionType: string, 
   const snapshot = await usersRef.where('email', '==', email).get();
 
   if (snapshot.empty) {
-      console.log('No such user!');
-      return;
+    console.log('No such user!');
+    return;
   }
 
   const userDoc = snapshot.docs[0];
@@ -151,7 +151,7 @@ export async function recordTransaction(email: string, transactionType: string, 
   currentTransactions.push({ type: transactionType, amount, timestamp: new Date().toISOString() });
 
   await userDoc.ref.update({
-      history: currentTransactions
+    history: currentTransactions
   });
 }
 

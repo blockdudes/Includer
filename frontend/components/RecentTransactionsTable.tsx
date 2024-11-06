@@ -7,7 +7,7 @@ const RecentTransactionsTable = () => {
     type: string;
     amount: number;
     timestamp: string;
-  }[] = user?.history;
+  }[] = user?.history || [];
 
   const rows = [
     ...transactions

@@ -29,7 +29,7 @@ const SignInForm = () => {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/loginUser`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}api/loginUser`,
         {
           email: formData.email,
           password: formData.password,

@@ -8,7 +8,7 @@ export const handleSuperSavingsInvest = async (
   const loader = toast.loading("Processing...");
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/deposit`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}api/deposit`,
       { email, amount }
     );
     toast.dismiss(loader);
@@ -27,7 +27,7 @@ export const handleSuperSavingsInvest = async (
 export const handleLoanRepayment = async (email: string, amount: number) => {
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/repay`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}api/repay`,
       { email, amount }
     );
   } catch (error) {
@@ -40,7 +40,7 @@ export const handleSuperSavingsWithdraw = async (
 ) => {
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/withdraw`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}api/withdraw`,
       { email, amount }
     );
   } catch (error) {
@@ -50,7 +50,7 @@ export const handleSuperSavingsWithdraw = async (
 export const handleAvailLoan = async (email: string, amount: number) => {
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/borrow`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}api/borrow`,
       { email, amount }
     );
   } catch (error) {
@@ -64,7 +64,7 @@ export const handleTransferP2P = async (
 ) => {
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/transfer`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}api/transfer`,
       { email, recipientEmail, amount }
     );
   } catch (error) {

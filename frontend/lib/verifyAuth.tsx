@@ -26,12 +26,12 @@ const VerifyAuth = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
-  if (!user && !(pathname === "/login" || pathname === "/register")) {
+  if (!user && !(pathname === "/login" || pathname === "/signup")) {
     router.push("/login");
     return null;
   }
 
-  if (user && (pathname === "/login" || pathname === "/register")) {
+  if (user && (pathname === "/login" || pathname === "/signup")) {
     router.push("/dashboard");
     return null;
   }

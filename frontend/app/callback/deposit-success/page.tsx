@@ -15,7 +15,7 @@ const DepositSuccess = () => {
     if (!localStorage.getItem(`sessionId-${sessionId}`)) {
       localStorage.setItem(`sessionId-${sessionId}`, "true");
       const response = await axios.post(
-        process.env.NEXT_PUBLIC_BACKEND_API_URL + "/recordTransaction",
+        process.env.NEXT_PUBLIC_BACKEND_URL + "api/recordTransaction",
         {
           email,
           transactionType: "deposit-fiat",

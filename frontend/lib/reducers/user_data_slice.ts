@@ -22,7 +22,7 @@ export const getUserData = createAsyncThunk(
     try {
       const [userDataResponse, userBalanceResponse] = await Promise.all([
         axios.post(
-          `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/getUserByEmail`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}api/getUserByEmail`,
           { email },
           {
             headers: {
@@ -31,7 +31,7 @@ export const getUserData = createAsyncThunk(
           }
         ),
         axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/getBalance/${email}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}api/getBalance/${email}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

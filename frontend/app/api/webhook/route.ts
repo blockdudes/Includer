@@ -19,7 +19,7 @@ export const config = {
 };
 
 async function getUserByEmail(email: string) {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/getUserByEmail`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/getUserByEmail`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ async function getUserByEmail(email: string) {
 }
 
 async function recordTransaction(email: string, transactionType: string, amount: string) {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/recordTransaction`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/recordTransaction`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -41,16 +41,17 @@ async function recordTransaction(email: string, transactionType: string, amount:
   });
 }
 
-export async function mintTokens(amount: string , email: string) {
-
+export async function mintTokens(amount: string, email: string) {
+  console.log("HALWA");
   const toAddress = await getUserByEmail(email);
+  console.log("HALWA", toAddress);
 
-  const options =  {
-      contractId :'CDQ56Q2MGOI53XVQMARVHFWI6FVM7FG7QHAT22Q2Z7L7W5WU6IYXED4V',
-      sourceAccount :'SBOU7VP4MYLJSFFYRXV5Z2XAT62YQBUKQQA2ANBDP3P5FLBPQMRM6XJN',
-      rpcUrl :'https://soroban-testnet.stellar.org:443',
-      networkPassphrase :'Test SDF Network ; September 2015',
-  } 
+  const options = {
+    contractId: 'CDQ56Q2MGOI53XVQMARVHFWI6FVM7FG7QHAT22Q2Z7L7W5WU6IYXED4V',
+    sourceAccount: 'SBOU7VP4MYLJSFFYRXV5Z2XAT62YQBUKQQA2ANBDP3P5FLBPQMRM6XJN',
+    rpcUrl: 'https://soroban-testnet.stellar.org:443',
+    networkPassphrase: 'Test SDF Network ; September 2015',
+  }
 
   const command = `stellar contract invoke \
       --id ${options.contractId} \
@@ -62,18 +63,18 @@ export async function mintTokens(amount: string , email: string) {
       --amount ${amount};`
 
   return new Promise((resolve, reject) => {
-      exec(command, (error: any, stdout: any, stderr: any) => {
-          if (error) {
-              console.error(`Error: ${error}`);
-              reject(error);
-              return;
-          }
-          if (stderr) {
-              console.error(`stderr: ${stderr}`);
-          }
-          console.log(`stdout: ${stdout}`);
-          resolve(stdout);
-      });
+    exec(command, (error: any, stdout: any, stderr: any) => {
+      if (error) {
+        console.error(`Error: ${error}`);
+        reject(error);
+        return;
+      }
+      if (stderr) {
+        console.error(`stderr: ${stderr}`);
+      }
+      console.log(`stdout: ${stdout}`);
+      resolve(stdout);
+    });
   });
 }
 async function buffer(req: NextRequest) {
@@ -98,6 +99,7 @@ export async function POST(req: NextRequest) {
     const signature = req.headers.get("stripe-signature");
 
     if (!signature) {
+      console.log("signature")
       console.error("Missing Stripe signature");
       return NextResponse.json({ error: "Missing Stripe signature" }, { status: 400 });
     }
@@ -115,9 +117,12 @@ export async function POST(req: NextRequest) {
 
   // Process the event
   if (event.type === "checkout.session.completed") {
+    console.log("completed")
     const session = event.data.object as Stripe.Checkout.Session;
     console.log("Payment successful, session ID:", session);
     await grantAccessToUser(session);
+  } else {
+    console.log("else", event)
   }
 
   return NextResponse.json({ received: true }, { status: 200 });
@@ -125,17 +130,21 @@ export async function POST(req: NextRequest) {
 
 // Example function to grant access to the user
 async function grantAccessToUser(session: Stripe.Checkout.Session) {
-  console.log('session',session)
+  console.log('session', session);
+  console.log("email", session.customer_details?.email);
+  console.log("amount", session.amount_total);
+
+
   const paymentStatus = session.payment_status;
   const email = session.customer_details?.email;
   const amount = session.amount_total ? session.amount_total / 100 : null;
 
   if (paymentStatus === "paid") {
     console.log(`Access granted to: ${paymentStatus}`);
-    if (! email) {
+    if (!email) {
       throw new Error("Email not found");
     }
-    if (! amount) {
+    if (!amount) {
       throw new Error("Amount not found");
     }
     await mintTokens(amount.toString(), email);

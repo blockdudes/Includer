@@ -2,12 +2,44 @@
 import { Button, Input, Option, Select } from "@material-tailwind/react";
 import React, { useState } from "react";
 import CustomDialog from "./CustomDialog";
+import axios from "axios";
+import { useAppSelector } from "@/lib/hooks";
+import toast from "react-hot-toast";
 
 const LoanActions = () => {
   const [isGetLoanDialogOpen, setIsGetLoanDialogOpen] = useState(false);
   const [isRepayLoanDialogOpen, setIsRepayLoanDialogOpen] = useState(false);
   const [loanAmount, setLoanAmount] = useState(0);
   const [duration, setDuration] = useState("1");
+  const { user } = useAppSelector((state) => state.user);
+
+
+
+
+  const handleGetLoan = async () => {
+    try {
+
+      if (user.email) {
+        const response = axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/borrow`, {
+          email: user?.email,
+          amount: loanAmount
+        }, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        setIsGetLoanDialogOpen(false)
+        toast.success("")
+      } else {
+        toast.error("")
+        throw Error;
+      }
+    } catch (error) {
+      toast.error("")
+      console.log(error);
+    }
+  }
 
   return (
     <div className="grid grid-cols-2 gap-4">
@@ -99,7 +131,7 @@ const LoanActions = () => {
               <Button
                 variant="gradient"
                 color="green"
-                onClick={() => setIsGetLoanDialogOpen(false)}
+                onClick={() => handleGetLoan()}
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
