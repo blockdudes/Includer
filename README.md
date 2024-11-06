@@ -1,10 +1,10 @@
-# EasyPay - Web3 Banking System
+# Includer - Web3 Banking System
 
-Welcome to EasyPay! This repository contains the source code for EasyPay, a Web3 banking platform built on the Stellar blockchain to provide accessible and secure financial services. The project aims to promote financial inclusion, particularly in underserved regions like the Global South, with a focus on rural areas and households headed by women.
+Welcome to Includer! This repository contains the source code for Includer, a Web3 banking platform built on the Stellar blockchain to provide accessible and secure financial services. The project aims to promote financial inclusion, particularly in underserved regions like the Global South, with a focus on rural areas and households headed by women.
 
 ## Project Overview
 
-EasyPay leverages Stellar’s blockchain infrastructure and integrates with MoneyGram to deliver a decentralized banking system that allows users to:
+Includer leverages Stellar’s blockchain infrastructure and integrates with MoneyGram to deliver a decentralized banking system that allows users to:
 - Deposit fiat currency, converted into stablecoins for inflation-protected savings.
 - Borrow and lend money directly on the platform.
 - Transfer money to other users instantly.
@@ -19,9 +19,9 @@ EasyPay leverages Stellar’s blockchain infrastructure and integrates with Mone
 - **Seamless Money Transfers:** Transfer funds to other users easily within the platform.
 - **Integration with MoneyGram:** Cash deposits and withdrawals are available through MoneyGram's network.
 
-## How to Run EasyPay Locally
+## How to Run Includer Locally
 
-To run the EasyPay platform locally, follow the steps below to set up both the frontend and backend.
+To run the Includer platform locally, follow the steps below to set up both the frontend and backend.
 
 ### Prerequisites
 - [Node.js](https://nodejs.org/) (v14 or above)
@@ -45,7 +45,7 @@ To run the EasyPay platform locally, follow the steps below to set up both the f
    ```
 
 4. **Access the frontend application:**
-   Open your browser and navigate to `http://localhost:3000` to see EasyPay in action.
+   Open your browser and navigate to `http://localhost:3000` to see Includer in action.
 
 ### Setting Up the Backend
 
@@ -90,6 +90,6 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 
 If you have any questions or suggestions, feel free to reach out:
 - [Your Name](mailto:your.email@example.com)
-- [Project GitHub Issues](https://github.com/your-username/easypay/issues)
+- [Project GitHub Issues](https://github.com/your-username/Includer/issues)
 
 Let's make Web3 more accessible together!
