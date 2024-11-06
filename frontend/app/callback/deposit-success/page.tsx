@@ -1,40 +1,9 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
-import { useSearchParams } from "next/navigation";
-import axios from "axios";
 
 const DepositSuccess = () => {
-  const searchParams = useSearchParams();
-  const email = searchParams.get("email");
-  const amount = searchParams.get("amount");
-  const sessionId = searchParams.get("session_id");
-
-  const recordTransaction = async () => {
-    if (!localStorage.getItem(`sessionId-${sessionId}`)) {
-      localStorage.setItem(`sessionId-${sessionId}`, "true");
-      const response = await axios.post(
-        process.env.NEXT_PUBLIC_BACKEND_URL + "api/recordTransaction",
-        {
-          email,
-          transactionType: "deposit-fiat",
-          amount,
-        }
-      );
-      if (response.status === 200) {
-        console.log("Transaction recorded successfully");
-      } else {
-        console.error("Failed to record transaction");
-      }
-    } else {
-      console.log("Transaction already recorded");
-    }
-  };
-  useEffect(() => {
-    recordTransaction();
-  }, [sessionId]);
-
   return (
     <div className="h-screen w-screen flex items-center justify-center">
       <div className="max-w-md flex flex-col items-center justify-center gap-2">

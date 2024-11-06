@@ -12,11 +12,16 @@ const BorrowingEligibility = () => {
           <h3 className="font-semibold mb-2">Maximum Borrowable Amount</h3>
           <p className="text-3xl font-bold">
             $
-            {(Number(contractBalance?.total_deposit_balance) * 0.8)
+            {(
+              Number(contractBalance?.total_deposit_balance) * 0.8 -
+              Number(contractBalance?.borrow_balance)
+            )
               .toFixed(2)
               .toLocaleString()}
           </p>
-          <p className="text-sm text-white/90">(80% of locked Super Savings)</p>
+          <p className="text-sm text-white/90">
+            (80% of locked Super Savings - Active Loans)
+          </p>
         </div>
         <div className="bg-card-background-gradient shadow-card-shadow p-4 rounded-lg flex flex-col">
           <h3 className="font-semibold mb-2">Interest Rates</h3>

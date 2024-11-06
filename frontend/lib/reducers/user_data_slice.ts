@@ -5,6 +5,7 @@ import axios from "axios";
 export interface userDataType {
   user: null | any;
   contractBalance: null | any;
+  balance: any | null;
   error: null | any;
   loading: boolean;
 }
@@ -12,6 +13,7 @@ export interface userDataType {
 const initialUserDataState: userDataType = {
   user: null,
   contractBalance: null,
+  balance: null,
   error: null,
   loading: false,
 };
@@ -40,9 +42,54 @@ export const getUserData = createAsyncThunk(
         ),
       ]);
 
+      let balance = 0;
+      balance += (userDataResponse.data.history as any[])
+        .filter((transaction) => transaction.type === "mint")
+        .reduce(
+          (acc: number, transaction) => acc + Number(transaction.amount),
+          0
+        );
+      balance -= (userDataResponse.data.history as any[])
+        .filter((transaction) => transaction.type === "deposit")
+        .reduce(
+          (acc: number, transaction) => acc + Number(transaction.amount),
+          0
+        );
+      balance += (userDataResponse.data.history as any[])
+        .filter((transaction) => transaction.type === "borrow_token")
+        .reduce(
+          (acc: number, transaction) => acc + Number(transaction.amount),
+          0
+        );
+      balance -= (userDataResponse.data.history as any[])
+        .filter((transaction) => transaction.type.startsWith("transfer-to"))
+        .reduce(
+          (acc: number, transaction) => acc + Number(transaction.amount),
+          0
+        );
+      balance += (userDataResponse.data.history as any[])
+        .filter((transaction) => transaction.type.startsWith("transfer-from"))
+        .reduce(
+          (acc: number, transaction) => acc + Number(transaction.amount),
+          0
+        );
+      balance -= (userDataResponse.data.history as any[])
+        .filter((transaction) => transaction.type.startsWith("repay_token"))
+        .reduce(
+          (acc: number, transaction) => acc + Number(transaction.amount),
+          0
+        );
+      balance -= (userDataResponse.data.history as any[])
+        .filter((transaction) => transaction.type.startsWith("withdraw_token"))
+        .reduce(
+          (acc: number, transaction) => acc + Number(transaction.amount),
+          0
+        );
+
       const result = {
         user: userDataResponse?.data,
         contractBalance: userBalanceResponse?.data?.balance,
+        balance: balance.toString(),
       };
 
       console.log(result);
@@ -65,12 +112,14 @@ export const userSlice = createSlice({
         state.loading = false;
         state.user = action.payload?.user;
         state.contractBalance = action.payload?.contractBalance;
+        state.balance = action.payload?.balance;
         state.error = null;
       })
       .addCase(getUserData.rejected, (state, action) => {
         state.loading = false;
         state.user = null;
         state.contractBalance = null;
+        state.balance = null;
         state.error = action.error;
       });
   },
@@ -78,6 +127,7 @@ export const userSlice = createSlice({
     clearUserData: (state) => {
       state.user = null;
       state.contractBalance = null;
+      state.balance = null;
       state.error = null;
       state.loading = false;
     },

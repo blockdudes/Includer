@@ -11,35 +11,70 @@ const LoanActions = () => {
   const [isRepayLoanDialogOpen, setIsRepayLoanDialogOpen] = useState(false);
   const [loanAmount, setLoanAmount] = useState(0);
   const [duration, setDuration] = useState("1");
+  const [repayAmount, setRepayAmount] = useState(0);
   const { user } = useAppSelector((state) => state.user);
-
-
-
 
   const handleGetLoan = async () => {
     try {
-
       if (user.email) {
-        const response = axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/borrow`, {
-          email: user?.email,
-          amount: loanAmount
-        }, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}api/borrow`,
+          {
+            email: user?.email,
+            amount: loanAmount,
           },
-        });
-
-        setIsGetLoanDialogOpen(false)
-        toast.success("")
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        if (response.status === 200) {
+          toast.success("Loan request successful");
+        } else {
+          toast.error("Something went wrong");
+        }
+        setIsGetLoanDialogOpen(false);
       } else {
-        toast.error("")
+        toast.error("Something went wrong");
         throw Error;
       }
     } catch (error) {
-      toast.error("")
+      toast.error("Loan request failed");
       console.log(error);
     }
-  }
+  };
+
+  const handleRepayLoan = async () => {
+    try {
+      if (user.email) {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}api/repay`,
+          {
+            email: user?.email,
+            amount: repayAmount,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        if (response.status === 200) {
+          toast.success("Loan repayment successful");
+        } else {
+          toast.error("Something went wrong");
+        }
+        setIsRepayLoanDialogOpen(false);
+      } else {
+        toast.error("Something went wrong");
+        throw Error;
+      }
+    } catch (error) {
+      toast.error("Loan repayment failed");
+      console.log(error);
+    }
+  };
 
   return (
     <div className="grid grid-cols-2 gap-4">
@@ -131,7 +166,7 @@ const LoanActions = () => {
               <Button
                 variant="gradient"
                 color="green"
-                onClick={() => handleGetLoan()}
+                onClick={handleGetLoan}
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
@@ -173,10 +208,10 @@ const LoanActions = () => {
                   labelProps={{
                     className: "hidden",
                   }}
-                  value={loanAmount}
+                  value={repayAmount}
                   onChange={(e) => {
                     if (e.target.value) {
-                      setLoanAmount(Number(e.target.value));
+                      setRepayAmount(Number(e.target.value));
                     }
                   }}
                   placeholder="Enter amount"
@@ -203,7 +238,7 @@ const LoanActions = () => {
               <Button
                 variant="gradient"
                 color="green"
-                onClick={() => setIsRepayLoanDialogOpen(false)}
+                onClick={handleRepayLoan}
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}

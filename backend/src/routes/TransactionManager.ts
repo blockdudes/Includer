@@ -381,6 +381,8 @@ async function transferFunds(
       amount,
       senderKeypair
     );
+    await recordTransaction(email, `transfer-to/${recipientEmail}`, amount);
+    await recordTransaction(recipientEmail, `transfer-from/${email}`, amount);
     res.status(200).send({ message: "Transfer successful", response });
   } catch (error) {
     res

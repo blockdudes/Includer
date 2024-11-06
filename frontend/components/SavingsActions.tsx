@@ -3,6 +3,8 @@ import { Button, Input, Option, Select } from "@material-tailwind/react";
 import React, { useRef, useState } from "react";
 import CustomDialog from "./CustomDialog";
 import { useAppSelector } from "@/lib/hooks";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const SavingsActions = () => {
   const { user } = useAppSelector((state) => state.user);
@@ -14,6 +16,70 @@ const SavingsActions = () => {
   const [withdrawAmount, setWithdrawAmount] = useState(0);
   const [depositAmount, setDepositAmount] = useState(0);
   const [transferAmount, setTransferAmount] = useState(0);
+  const [transferRecipientEmail, setTransferRecipientEmail] = useState("");
+
+  const handleWithdraw = async () => {
+    try {
+      if (user.email) {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}api/withdraw`,
+          {
+            email: user?.email,
+            amount: withdrawAmount,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        if (response.status === 200) {
+          toast.success("Withdrawal successful");
+        } else {
+          toast.error("Something went wrong");
+        }
+        setIsWithdrawDialogOpen(false);
+      } else {
+        toast.error("Something went wrong");
+        throw Error;
+      }
+    } catch (error) {
+      toast.error("Withdrawal failed");
+      console.log(error);
+    }
+  };
+  
+  const handleTransfer = async () => {
+    try {
+      if (user.email) {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}api/transfer`,
+          {
+            email: user?.email,
+            recipientEmail: transferRecipientEmail, 
+            amount: transferAmount,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        if (response.status === 200) {
+          toast.success("Transfer successful");
+        } else {
+          toast.error("Something went wrong");
+        }
+        setIsTransferDialogOpen(false);
+      } else {
+        toast.error("Something went wrong");
+        throw Error;
+      }
+    } catch (error) {
+      toast.error("Transfer failed");
+      console.log(error);
+    }
+  };
 
   return (
     <div className="grid grid-cols-3 gap-4">
@@ -105,7 +171,7 @@ const SavingsActions = () => {
               <Button
                 variant="gradient"
                 color="green"
-                onClick={() => setIsWithdrawDialogOpen(false)}
+                onClick={handleWithdraw}
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
@@ -228,6 +294,12 @@ const SavingsActions = () => {
                   labelProps={{
                     className: "hidden",
                   }}
+                  value={transferRecipientEmail}
+                  onChange={(e) => {
+                    if (e.target.value) {
+                      setTransferRecipientEmail(e.target.value);
+                    }
+                  }}
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
@@ -275,7 +347,7 @@ const SavingsActions = () => {
               <Button
                 variant="gradient"
                 color="green"
-                onClick={() => setIsTransferDialogOpen(false)}
+                onClick={handleTransfer}
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}

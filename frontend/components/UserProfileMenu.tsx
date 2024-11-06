@@ -7,7 +7,9 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { clearUserData } from "@/lib/reducers/user_data_slice";
 
 const UserProfileMenu = () => {
-  const { user, contractBalance } = useAppSelector((state) => state.user);
+  const { user, contractBalance, balance } = useAppSelector(
+    (state) => state.user
+  );
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -74,7 +76,10 @@ const UserProfileMenu = () => {
         <div className="absolute z-20 mt-2 w-64 backdrop-blur-md bg-card-background-gradient shadow-card-shadow rounded-[40px] p-4">
           <p className="text-lg font-semibold">Current Balance</p>
           <p className="text-base text-gray-100">
-            {contractBalance?.total_deposit_balance} USD
+            {(Number(balance) + Number(contractBalance?.total_deposit_balance))
+              ?.toFixed(2)
+              .toLocaleString()}{" "}
+            USD
           </p>
           <div className="h-[2px] w-full bg-white/20 rounded-full my-2" />
           <Button
